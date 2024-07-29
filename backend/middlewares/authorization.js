@@ -1,29 +1,28 @@
+
 const jwt = require('jsonwebtoken');
-const User = require('../models/User'); 
+const User = require('../models/User');
 
-async function checkAuthorization (req, res, next) {
-    const token = req.cookies.token || req.headers.authorization?.split(' ')[1]; // Check cookie or Authorization header
-    console.log(token);
-
+async function requireAuth(req, res, next) {
+    const token = req.cookies["token"];
+    
     if (!token) {
-        return res.status(401).json({ msg: 'No token provided, authorization denied.' });
+        return res.redirect('/user/login');
     }
-    try {
-n
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
         const user = await User.findById(decoded.id).select('-password');
         
         if (!user) {
-            return res.status(401).json({ msg: 'User not found.' });
+            return res.redirect('/user/login'); 
         }
 
         req.user = user; 
-        next();
+        next(); 
     } catch (error) {
         console.error(error);
-        res.status(401).json({ msg: 'Token is not valid.' });
+        return res.redirect('/user/login'); 
     }
-};
+}
 
-module.exports = checkAuthorization;
+module.exports = {requireAuth};

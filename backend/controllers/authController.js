@@ -48,7 +48,7 @@ async function handleUserLogin(req, res) {
 
         if (passwordMatches) {
             const token = generateToken(user.email, user._id);
-            return res.cookie("token", token).redirect("/");
+            return res.cookie("token", token).redirect("/user/userHome");
         } else {
             return res.render("login", { msg: "Incorrect email or password" });
         }

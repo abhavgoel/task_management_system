@@ -2,10 +2,10 @@ require("dotenv").config();
 const cookieParser = require("cookie-parser");
 const express = require("express");
 const path = require("path");
-const authRoute = require("./routes/authRoutes");
+const userRoute = require("./routes/userRoutes");
 const connectToMongoDb = require("./dbConnection");
 const {requestLogger} = require("./middlewares/requestLogger");
-const { checkAuthorization } = require("./middlewares/authorization");
+const { requireAuth } = require("./middlewares/authorization");
 
 const app = express();
 const PORT = process.env.PORT || 8000;
@@ -14,6 +14,7 @@ const PORT = process.env.PORT || 8000;
 app.use(requestLogger("serverlog.txt"));
 app.use(express.static(path.resolve("./public")))
 app.use(express.urlencoded({extended: false}));
+app.use(cookieParser());
 
 
 //view engine setup
@@ -29,8 +30,10 @@ connectToMongoDb(process.env.MONGO_URL).then(() => {
 
 
 
-
-app.use("/user",authRoute)
+app.get("/",(req,res) => {
+    return res.render("landingPage");
+});
+app.use("/user",userRoute)
 
 app.listen(PORT, () => {
     console.log("Server listening on PORT: " + PORT);
