@@ -25,9 +25,9 @@ const userSchema = new mongoose.Schema({
 
 });
 
-userSchema.pre("save", async (next) => {
+userSchema.pre("save", async function (next) {
     if(this.isModified("password")===false) {
-        next();
+        return next();
     }
 
     //using salt hash to encrppy user passwords
@@ -35,9 +35,11 @@ userSchema.pre("save", async (next) => {
     this.password = await bcrypt.hash(this.password, salt);
 });
 
-userSchema.static("matchPassword", async (enteredPassword) => {
-    return await bcrypt.compare(enteredPassword, this.password);
-});
+userSchema.methods.matchPassword = async function (enteredPassword) {
+     let val = await bcrypt.compare(enteredPassword, this.password);
+    //  console.log(val)
+     return val;
+};
 
 const User = mongoose.model("User", userSchema);
 
