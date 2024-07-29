@@ -25,6 +25,16 @@ const userSchema = new mongoose.Schema({
 
 });
 
+userSchema.pre("save", async (next) => {
+    if(this.isModified("password")===false) {
+        next();
+    }
+
+    //using salt hash to encrppy user passwords
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
+});
+
 userSchema.static("matchPassword", async (enteredPassword) => {
     return await bcrypt.compare(enteredPassword, this.password);
 });
