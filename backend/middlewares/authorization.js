@@ -18,7 +18,7 @@ async function requireAuth(req, res, next) {
         }
 
         req.user = user; 
-        next(); 
+        return next(); 
     } catch (error) {
         console.error(error);
         return res.redirect('/user/login'); 
