@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <%- include("./partials/css.ejs") %>
+  <title>Edit Task</title>
+</head>
+
+<body>
+  <%- include("./partials/navbar.ejs") %>
+
+  <div class="container mt-4">
+    <h1>Edit Task</h1>
+
+    <form action="/tasks/update/<%= locals.task._id %>" method="POST">
+      <div class="mb-3">
+        <label for="title" class="form-label">Title</label>
+        <input type="text" class="form-control" id="title" name="title" value="<%= locals.task.title %>" required>
+      </div>
+      <div class="mb-3">
+        <label for="assignee" class="form-label">Assignee</label>
+        <input type="text" class="form-control" id="assignee" name="assignee" value="<%= locals.task.assignee.email %>" required>
+      </div>
+      <div class="mb-3">
+        <label for="creator" class="form-label">Creator</label>
+        <input type="text" class="form-control" id="creator" name="creator" value="<%= locals.task.creator._id.toString() === user._id.toString() ? 'You' : locals.task.creator.name %>" readonly>
+      </div>
+      <div class="mb-3">
+        <label for="dueDate" class="form-label">Due Date</label>
+        <input type="date" class="form-control" id="dueDate" name="dueDate" value="<%= locals.task.dueDate.toISOString().split('T')[0] %>" required>
+      </div>
+      <div class="mb-3">
+        <label for="priority" class="form-label">Priority</label>
+        <select class="form-select" id="priority" name="priority" required>
+          <option value="Low" <%= locals.task.priority === 'Low' ? 'selected' : '' %>>Low</option>
+          <option value="Medium" <%= locals.task.priority === 'Medium' ? 'selected' : '' %>>Medium</option>
+          <option value="High" <%= locals.task.priority === 'High' ? 'selected' : '' %>>High</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label for="description" class="form-label">Description</label>
+        <textarea class="form-control" id="description" name="description" rows="3" required><%= task.description %></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary">Update Task</button>
+    </form>
+  </div>
+
+  <%- include("./partials/script.ejs") %>
+</body>
+
+</html>

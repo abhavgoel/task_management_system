@@ -4,7 +4,9 @@ const { handleCreateTask,
         handlePersonalTasks, 
         handleAssignedTasks,
         handleGetTaskDetails,
-        handleUpdateTaskStatusByAssignee} = require("../controllers/taskController")
+        handleUpdateTaskStatusByAssignee,
+        handleUpdateTaskByCreator,
+        handleGetEditTaskByCreator} = require("../controllers/taskController")
 
 router.get("/createTask", (req,res) => {
     return res.render("createTask" , {
@@ -21,5 +23,9 @@ router.get("/myTasks", handlePersonalTasks);
 router.get("/assignedTasks",handleAssignedTasks);
 
 router.get("/updateStatus/:id", handleGetTaskDetails);
+
+router.post("/updateStatus/:id",handleUpdateTaskStatusByAssignee );
+
+router.get("/edit/:id", handleGetEditTaskByCreator);
 
 module.exports = router;

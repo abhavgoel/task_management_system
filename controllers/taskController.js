@@ -54,6 +54,38 @@ async function handleUpdateTaskStatusByAssignee(req,res) { //if provided only st
     const task = await Task.findById(taskId);
     task.status = req.body.status;
     await task.save();
+    return res.render("task", {
+        task : task,
+        user : req.user
+    })
+}
+
+async function handleGetEditTaskByCreator(req,res) {
+    const taskId = req.params.id;
+    const task = await Task.findById(taskId).populate("assignee");
+    // console.log(task)
+    return res.render("editTask" , {
+        task : task,
+        user : req.user
+    });
+}
+async function handleUpdateTaskByCreator(req,res) {
+    const taskId = req.params.id;
+    const task = await Task.findById(taskId);
+
+    task.title = req.body.title;
+    task.assignee = await User.findOne({ email: req.body.assignee });
+    task.dueDate = new Date(req.body.dueDate);
+    task.priority = req.body.priority;
+    task.description = req.body.description;
+
+    // task = task.populate("assignee");
+    await task.save();
+
+    return res.render("editTask", {
+        task:task,
+        user:req.user
+    })
 }
 
 
@@ -63,7 +95,9 @@ module.exports = {
     handlePersonalTasks,
     handleAssignedTasks,
     handleGetTaskDetails,
-    handleUpdateTaskStatusByAssignee
+    handleUpdateTaskStatusByAssignee,
+    handleUpdateTaskByCreator,
+    handleGetEditTaskByCreator
 
 }
 

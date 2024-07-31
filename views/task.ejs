@@ -30,7 +30,7 @@
             <label for="status" class="form-label">Update Status</label>
             <select name="status" id="status" class="form-select">
               <option value="Pending" <%= locals.task.status === 'Pending' ? 'selected' : '' %>>Pending</option>
-              <option value="In Progress" <%= locals.task.status === 'In Progress' ? 'selected' : '' %>>In Progress</option>
+              
               <option value="Completed" <%= locals.task.status === 'Completed' ? 'selected' : '' %>>Completed</option>
             </select>
           </div>
