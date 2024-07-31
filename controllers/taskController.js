@@ -3,10 +3,16 @@ const User = require("../models/User");
 
 async function handleCreateTask(req,res) { //TODO
     const { title, assignee, dueDate, priority, description  } = req.body;
+
+    const creator = req.user._id;
+
+    const assigneeUser = await User.findOne({email:assignee});
+
     
     const task = await Task.create({
         title,
-        assignee,
+        creator,
+        assignee : assigneeUser._id,
         dueDate,
         priority,
         description,
@@ -27,5 +33,12 @@ async function handleAssignedTasks(req,res) {
     const assignedTasks = await Task.find({assignee : req.user._id});
     
 
+}
+
+module.exports = {
+    handleCreateTask,
+    handlePersonalTasks,
+    handleAssignedTasks,
+    
 }
 

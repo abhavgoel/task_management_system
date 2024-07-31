@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const taskSchema = new mongoose.Schema({
     title : {
-        rtpe: String,
+        type: String,
         required:true
     }, 
     creator : {

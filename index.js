@@ -33,13 +33,14 @@ connectToMongoDb(process.env.MONGO_URL).then(() => {
 });
 
 
-
+//landing page
 app.get("/",requireAuth,(req,res) => {
     return res.render("landingPage" , {
         user : req.user
     });
 });
-
+ 
+//Route registration to paths
 app.use("/user",userRoute)
 app.use("/tasks" , requireAuth, taskRoute);
 
