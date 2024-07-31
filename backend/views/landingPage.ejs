@@ -5,9 +5,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <%- include("./partials/css.ejs") %>
     <title>TaskUp</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap');
+        .landingImage {
+        width: 700px;
+        }
+
+        img{
+        display:block;
+        margin:0 auto;
+        width:200px;
+        }
+
+    </style>
 </head>
 <body>
     <%- include("./partials/navbar.ejs") %>
     <%- include("./partials/script.ejs") %>
+    <div class="container mt-5">
+        <div class="jumbotron">
+          <h1 class="display-4">Welcome to TaskUp!</h1>
+          <p class="lead">Manage your tasks efficiently with TaskUp. Create, assign, and track tasks with ease.</p>
+          <hr class="my-4">
+          <p>
+            <% if (locals.user) { %>
+            Use the navigation bar to access your tasks and groups.
+            <% } else { %>
+            Please <a href="/user/login">Login</a> or <a href="/user/signup">Sign Up</a> to get started.
+            <% } %>
+          </p>
+          <% if (locals.user) { %>
+          <a class="btn btn-primary btn-lg" href="/tasks/myTasks" role="button">Personal Tasks</a>
+          <a class="btn btn-secondary btn-lg" href="/tasks/assignedTasks" role="button">Assigned Tasks</a>
+          <% } %>
+        </div>
+      </div>
+    <div>
+        <image class="landingImage" src = "/media/taskManager.png">
+    </div>
 </body>
 </html>

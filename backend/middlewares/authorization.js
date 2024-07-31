@@ -1,4 +1,3 @@
-
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
@@ -6,7 +5,10 @@ async function requireAuth(req, res, next) {
     const token = req.cookies["token"];
     
     if (!token) {
-        return res.redirect('/user/login');
+        if (req.path === '/' || req.path === '/user/login' || req.path === '/user/signup') {
+            return next(); // Allowing access to home, login, and signup without authentication
+        }
+        else return res.redirect('/');
     }
 
     try {
@@ -25,4 +27,6 @@ async function requireAuth(req, res, next) {
     }
 }
 
-module.exports = {requireAuth};
+module.exports = {
+    requireAuth
+};

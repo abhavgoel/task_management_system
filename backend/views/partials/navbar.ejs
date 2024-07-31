@@ -1,32 +1,34 @@
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="#">TaskUp</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link" href="/">Home</a>
-          </li>
-          <% if (locals.user) { %>
-          <li class="nav-item">
-            <a class="nav-link" href="/tasks">My Tasks</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/groups">My Groups</a>
-          </li>
-          <% } %>
-        </ul>
-        <div class="ms-auto">
-          <% if (locals.user) { %>
-          <a class="btn btn-outline-primary me-2" href="/user/logout">Logout</a>
-          <% } else { %>
-          <a class="btn btn-outline-primary me-2" href="/user/login">Login</a>
-          <a class="btn btn-primary" href="/user/signup">Sign Up</a>
-          <% } %>
-        </div>
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/">TaskUp</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <% if (locals.user) { %>
+        <li class="nav-item">
+          <a class="nav-link" href="/tasks/myTasks">Personal Tasks</a> <!-- Tasks assigned to user by user itself-->
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/tasks/assignedTasks">Assigned Tasks</a> <!-- Tasks assigned to user by other user-->
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/tasks/createTask">Create Task</a> <!-- Create task-->
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/groups/list">My Groups</a>
+        </li>
+        <% } %>
+      </ul>
+      <div class="ms-auto">
+        <% if (locals.user) { %>
+        <a class="btn btn-outline-primary me-2" href="/user/logout">Logout</a>
+        <% } else { %>
+        <a class="btn btn-outline-primary me-2" href="/user/login">Login</a>
+        <a class="btn btn-primary" href="/user/signup">Sign Up</a>
+        <% } %>
       </div>
     </div>
-  </nav>
-  
+  </div>
+</nav>

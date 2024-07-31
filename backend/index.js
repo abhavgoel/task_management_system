@@ -30,7 +30,7 @@ connectToMongoDb(process.env.MONGO_URL).then(() => {
 
 
 
-app.get("/",(req,res) => {
+app.get("/",requireAuth,(req,res) => {
     return res.render("landingPage");
 });
 app.use("/user",userRoute)
