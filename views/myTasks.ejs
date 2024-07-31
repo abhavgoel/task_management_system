@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <%- include("./partials/css.ejs") %>
+  <title>My Tasks</title>
+</head>
+
+<body>
+  <%- include("./partials/navbar.ejs") %>
+
+  <div class="container mt-4">
+    <h1>My Tasks</h1>
+    <% if (locals.tasks.length === 0) { %>
+    <p>No tasks found.</p>
+    <% } else { %>
+    <ul class="list-group">
+      <% locals.tasks.forEach(task => { %>
+      <li class="list-group-item mb-3">
+        <h5><%= task.title %></h5>
+        <p><strong>Due Date:</strong> <%= new Date(task.dueDate).toLocaleDateString() %></p>
+        <p><strong>Priority:</strong> <%= task.priority %></p>
+        <p><strong>Description:</strong> <%= task.description %></p>
+        <p><strong>Status:</strong>
+        <form action="/tasks/updateStatus/<%= task._id %>" method="POST" style="display: inline;">
+          <select name="status" class="form-select" required onchange="this.form.submit()">
+            <option value="Pending" <%= task.status === 'Pending' ? 'selected' : '' %>>Pending</option>
+            <option value="In Progress" <%= task.status === 'In Progress' ? 'selected' : '' %>>In Progress</option>
+            <option value="Completed" <%= task.status === 'Completed' ? 'selected' : '' %>>Completed</option>
+          </select>
+          <button type="submit" class="btn btn-primary mt-2">Update Status</button>
+        </form>
+        </p>
+
+        <!-- Add Attachment Form -->
+        <form action="/tasks/addAttachment/<%= task._id %>" method="POST" enctype="multipart/form-data" class="mb-3">
+          <input type="file" name="attachment" class="form-control mb-2" required>
+          <button type="submit" class="btn btn-success">Add Attachment</button>
+        </form>
+
+        <!-- Display Attachments -->
+        <p><strong>Attachments:</strong>
+          <% if (task.attachments.length > 0) { %>
+        <ul class="list-group">
+          <% task.attachments.forEach(attachment => { %>
+          <li class="list-group-item">
+            <a href="/tasks/attachments/<%= attachment.filename %>" download><%= attachment.originalname %></a>
+            <form action="/tasks/deleteAttachment/<%= task._id %>/<%= attachment.filename %>" method="POST" style="display: inline;">
+              <button type="submit" class="btn btn-danger btn-sm float-end">Delete</button>
+            </form>
+          </li>
+          <% }) %>
+        </ul>
+        <% } else { %>
+        <p>No attachments.</p>
+        <% } %>
+        </p>
+
+        <!-- Edit Task Button -->
+        <a href="/tasks/edit/<%= task._id %>" class="btn btn-primary">Edit Task</a>
+      </li>
+      <% }) %>
+    </ul>
+    <% } %>
+  </div>
+
+  <%- include("./partials/script.ejs") %>
+</body>
+
+</html>

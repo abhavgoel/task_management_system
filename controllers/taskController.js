@@ -19,19 +19,29 @@ async function handleCreateTask(req,res) { //TODO
         status: "Pending",
     });
 
-    return res.redirect
+    return res.redirect("/user/userHome")
 }
 
 async function handlePersonalTasks(req,res) {
     const myTasks = await Task.find({creator : req.user._id , assignee : req.user._id});
     return res.render("myTasks" , {
-        myTasks,
+        user:req.user,
+        tasks: myTasks,
     });
 }
 
 async function handleAssignedTasks(req,res) {
-    const assignedTasks = await Task.find({assignee : req.user._id});
+    const assignedTasks = await Task.find({assignee : req.user._id}).populate("creator");   
+    return res.render("assignedTasks" , {
+        user:req.user,
+        tasks: assignedTasks,
+    });
     
+}
+
+async function handleEditTaskbyAssignee(req,res) {
+    const taskId = req.params.id;
+    const task = await Task.findById(taskId);
 
 }
 
@@ -39,6 +49,6 @@ module.exports = {
     handleCreateTask,
     handlePersonalTasks,
     handleAssignedTasks,
-    
+
 }
 

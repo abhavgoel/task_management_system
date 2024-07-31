@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { handleCreateTask } = require("../controllers/taskController")
+const { handleCreateTask, handlePersonalTasks, handleAssignedTasks,} = require("../controllers/taskController")
 
 router.get("/createTask", (req,res) => {
     return res.render("createTask" , {
@@ -9,5 +9,11 @@ router.get("/createTask", (req,res) => {
 });
 
 router.post("/createTask" , handleCreateTask);
+
+router.get("/myTasks", handlePersonalTasks);
+
+// router.post("/edit/:id",)
+
+router.get("/assignedTasks",handleAssignedTasks)
 
 module.exports = router;
