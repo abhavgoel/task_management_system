@@ -2,7 +2,11 @@ require("dotenv").config();
 const cookieParser = require("cookie-parser");
 const express = require("express");
 const path = require("path");
+
+//Routes import----------------------------------------
 const userRoute = require("./routes/userRoutes");
+const taskRoute = require("./routes/taskRoutes");
+//----------------------------------------------
 const connectToMongoDb = require("./dbConnection");
 const {requestLogger} = require("./middlewares/requestLogger");
 const { requireAuth } = require("./middlewares/authorization");
@@ -35,7 +39,9 @@ app.get("/",requireAuth,(req,res) => {
         user : req.user
     });
 });
+
 app.use("/user",userRoute)
+app.use("/tasks" , requireAuth, taskRoute);
 
 app.listen(PORT, () => {
     console.log("Server listening on PORT: " + PORT);

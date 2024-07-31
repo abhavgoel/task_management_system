@@ -1,7 +1,7 @@
 const Task = require("../models/Task");
 const User = require("../models/User");
 
-async function handleCreateTask(req,res) {
+async function handleCreateTask(req,res) { //TODO
     const { title, assignee, dueDate, priority, description  } = req.body;
     
     const task = await Task.create({
@@ -14,13 +14,11 @@ async function handleCreateTask(req,res) {
     });
 
     return res.redirect
-    
-
 }
 
 async function handlePersonalTasks(req,res) {
     const myTasks = await Task.find({creator : req.user._id , assignee : req.user._id});
-    return res.render("my-tasks" , {
+    return res.render("myTasks" , {
         myTasks,
     });
 }

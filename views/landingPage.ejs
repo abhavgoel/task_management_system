@@ -31,7 +31,8 @@
             <% if (locals.user) { %>
             Use the navigation bar to access your tasks and groups.
             <% } else { %>
-            Please <a href="/user/login">Login</a> or <a href="/user/signup">Sign Up</a> to get started.
+              <a class="btn btn-primary btn-lg" href="/user/login" role="button">Login</a>
+              <a class="btn btn-secondary btn-lg" href="/user/signup" role="button">Signup</a>
             <% } %>
           </p>
           <% if (locals.user) { %>
