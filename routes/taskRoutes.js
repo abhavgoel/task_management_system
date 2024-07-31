@@ -6,7 +6,9 @@ const { handleCreateTask,
         handleGetTaskDetails,
         handleUpdateTaskStatusByAssignee,
         handleUpdateTaskByCreator,
-        handleGetEditTaskByCreator} = require("../controllers/taskController")
+        handleGetEditTaskByCreator,
+        handleGetTasksAssignedByUser,
+        handleDeleteTask} = require("../controllers/taskController")
 
 router.get("/createTask", (req,res) => {
     return res.render("createTask" , {
@@ -14,20 +16,30 @@ router.get("/createTask", (req,res) => {
     })
 });
 
+//create task
 router.post("/createTask" , handleCreateTask);
 
+//get self tasks
 router.get("/myTasks", handlePersonalTasks);
 
-// router.post("/edit/:id",)
-
+//get tasks assigned to user
 router.get("/assignedTasks",handleAssignedTasks);
 
+//get task details
 router.get("/updateStatus/:id", handleGetTaskDetails);
 
+//update task status
 router.post("/updateStatus/:id",handleUpdateTaskStatusByAssignee );
 
+//get task creatoe wants to edit
 router.get("/edit/:id", handleGetEditTaskByCreator);
 
+//update task creator wants to update
 router.post("/edit/:id", handleUpdateTaskByCreator);
+
+//get tasks assigned by user
+router.get("/myAssignedTasks", handleGetTasksAssignedByUser);
+
+router.post("/delete/:id", handleDeleteTask)
 
 module.exports = router;

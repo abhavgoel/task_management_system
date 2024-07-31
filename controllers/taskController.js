@@ -22,6 +22,17 @@ async function handleCreateTask(req,res) { //TODO
     return res.redirect("/user/userHome")
 }
 
+async function handleDeleteTask(req, res) {
+    const taskId = req.params.id;
+    try {
+      await Task.findByIdAndDelete(taskId);
+      const previousUrl = req.get('referer');
+      res.redirect(previousUrl);
+    } catch (error) {
+      console.error('Error deleting task:', error);
+      res.status(500).send('Internal Server Error');
+    }
+  }
 async function handlePersonalTasks(req,res) {
     const myTasks = await Task.find({creator : req.user._id , assignee : req.user._id});
     return res.render("myTasks" , {
@@ -88,9 +99,21 @@ async function handleUpdateTaskByCreator(req,res) {
         msg:"Task updated"
     })
 }
-async function handleAddAttachmentToTaskByAssignee (req,res){
-    return;
+
+async function handleGetTasksAssignedByUser(req,res) {
+    const userId = req.user._id;
+    const tasks = await Task.find({ creator: userId }).populate("assignee");
+    return res.render("myAssignedTasks", {
+        tasks: tasks,
+        user: req.user
+    });
+
 }
+
+async function handleAddAttachmentToTaskByAssignee (req,res){
+    
+}
+
 
 
 
@@ -101,7 +124,9 @@ module.exports = {
     handleGetTaskDetails,
     handleUpdateTaskStatusByAssignee,
     handleUpdateTaskByCreator,
-    handleGetEditTaskByCreator
+    handleGetEditTaskByCreator,
+    handleGetTasksAssignedByUser,
+    handleDeleteTask
 
 }
 
