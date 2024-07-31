@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <%- include("./partials/css.ejs") %>
+  <title>Task Details</title>
+</head>
+
+<body>
+  <%- include("./partials/navbar.ejs") %>
+
+  <div class="container mt-4">
+    <h1>Task Details</h1>
+
+    <div class="card mb-3">
+      <div class="card-body">
+        <h5 class="card-title"><%= locals.task.title %></h5>
+        <p><strong>Created By:</strong> <%= locals.task.creator.name %></p>
+        <p><strong>Assignee:</strong> <%= locals.task.assignee.name %></p>
+        <p><strong>Due Date:</strong> <%= new Date(locals.task.dueDate).toLocaleDateString() %></p>
+        <p><strong>Priority:</strong> <%= locals.task.priority %></p>
+        <p><strong>Description:</strong> <%= locals.task.description %></p>
+        <p><strong>Status:</strong> <%= locals.task.status %></p>
+
+        <% if (locals.user._id.toString() === locals.task.assignee._id.toString()) { %>
+        <form action="/tasks/updateStatus/<%= locals.task._id %>" method="POST" class="mt-3">
+          <div class="mb-3">
+            <label for="status" class="form-label">Update Status</label>
+            <select name="status" id="status" class="form-select">
+              <option value="Pending" <%= locals.task.status === 'Pending' ? 'selected' : '' %>>Pending</option>
+              <option value="In Progress" <%= locals.task.status === 'In Progress' ? 'selected' : '' %>>In Progress</option>
+              <option value="Completed" <%= locals.task.status === 'Completed' ? 'selected' : '' %>>Completed</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary">Update Status</button>
+        </form>
+        <% } %>
+
+        <% if (locals.user._id.toString() === locals.task.creator._id.toString()) { %>
+        <a href="/tasks/edit/<%= locals.task._id %>" class="btn btn-primary mt-3">Edit Task</a>
+        <% } %>
+      </div>
+    </div>
+
+  </div>
+
+  <%- include("./partials/script.ejs") %>
+</body>
+
+</html>

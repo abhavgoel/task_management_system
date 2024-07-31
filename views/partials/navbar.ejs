@@ -7,6 +7,9 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav">
         <% if (locals.user) { %>
+          <li class="nav-item">
+            <a class="nav-link" href="/user/userHome">Home</a> <!-- Tasks assigned to user by user itself-->
+          </li>
         <li class="nav-item">
           <a class="nav-link" href="/tasks/myTasks">Personal Tasks</a> <!-- Tasks assigned to user by user itself-->
         </li>

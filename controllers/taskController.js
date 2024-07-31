@@ -39,16 +39,31 @@ async function handleAssignedTasks(req,res) {
     
 }
 
-async function handleEditTaskbyAssignee(req,res) {
+//TODO - add Tasks update delete endpoints
+async function handleGetTaskDetails(req,res) {
+    const taskId = req.params.id;
+    const task = await Task.findById(taskId).populate("creator").populate("assignee");
+    return res.render("task" , {
+        task :task,
+        user : req.user
+    });
+}
+
+async function handleUpdateTaskStatusByAssignee(req,res) { //if provided only status as input
     const taskId = req.params.id;
     const task = await Task.findById(taskId);
-
+    task.status = req.body.status;
+    await task.save();
 }
+
+
 
 module.exports = {
     handleCreateTask,
     handlePersonalTasks,
     handleAssignedTasks,
+    handleGetTaskDetails,
+    handleUpdateTaskStatusByAssignee
 
 }
 
