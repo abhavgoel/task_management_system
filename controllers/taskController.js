@@ -1,6 +1,7 @@
 const Task = require("../models/Task");
 const User = require("../models/User");
 
+
 async function handleCreateTask(req,res) { //TODO
     const { title, assignee, dueDate, priority, description  } = req.body;
 
@@ -110,7 +111,21 @@ async function handleGetTasksAssignedByUser(req,res) {
 
 }
 
-async function handleAddAttachmentToTaskByAssignee (req,res){
+async function handleAddAttachment (req,res) {
+    const taskId = req.params.id;
+    const task = await Task.findById(taskId);
+
+    let newAttachment = null;
+    if (req.file) {
+        newAttachment = {
+            filename: req.file.filename,
+            originalname: req.file.originalname
+        }
+    };
+    task.attachments.push(newAttachment);
+    await task.save();
+
+    return res.redirect('back');
     
 }
 
@@ -126,7 +141,8 @@ module.exports = {
     handleUpdateTaskByCreator,
     handleGetEditTaskByCreator,
     handleGetTasksAssignedByUser,
-    handleDeleteTask
+    handleDeleteTask,
+    handleAddAttachment
 
 }
 
