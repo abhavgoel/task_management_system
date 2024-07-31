@@ -84,8 +84,12 @@ async function handleUpdateTaskByCreator(req,res) {
 
     return res.render("editTask", {
         task:task,
-        user:req.user
+        user:req.user,
+        msg:"Task updated"
     })
+}
+async function handleAddAttachmentToTaskByAssignee (req,res){
+    return;
 }
 
 

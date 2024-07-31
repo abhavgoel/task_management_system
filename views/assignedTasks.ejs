@@ -29,7 +29,7 @@
         <form action="/tasks/updateStatus/<%= task._id %>" method="POST" style="display: inline;">
           <select name="status" class="form-select" required>
             <option value="Pending" <%= task.status === 'Pending' ? 'selected' : '' %>>Pending</option>
-            <option value="In Progress" <%= task.status === 'In Progress' ? 'selected' : '' %>>In Progress</option>
+            
             <option value="Completed" <%= task.status === 'Completed' ? 'selected' : '' %>>Completed</option>
           </select>
           <button type="submit" class="btn btn-primary mt-2">Update Status</button>

@@ -28,4 +28,6 @@ router.post("/updateStatus/:id",handleUpdateTaskStatusByAssignee );
 
 router.get("/edit/:id", handleGetEditTaskByCreator);
 
+router.post("/edit/:id", handleUpdateTaskByCreator);
+
 module.exports = router;
