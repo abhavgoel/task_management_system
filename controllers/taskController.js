@@ -3,7 +3,7 @@ const User = require("../models/User");
 const path = require("path");
 const fs = require("fs");
 
-const { sendTaskNotification , sendCompletedTaskNotification} = require("../utils/notify")
+const { sendTaskNotification , sendCompletedTaskNotification, sendTaskDeletionNotification} = require("../utils/notify")
 
 
 async function handleCreateTask(req,res) { //TODO
@@ -31,14 +31,18 @@ async function handleCreateTask(req,res) { //TODO
 async function handleDeleteTask(req, res) {
     const taskId = req.params.id;
     try {
-      await Task.findByIdAndDelete(taskId);
-      const previousUrl = req.get('referer');
-      res.redirect(previousUrl);
+        const task = await Task.findByIdAndDelete(taskId).populate("assignee").populate("creator");
+        if (task) {
+            await sendTaskDeletionNotification(task.assignee.email, task);
+            const previousUrl = req.get('referer');
+            res.redirect(previousUrl);
+        }
     } catch (error) {
       console.error('Error deleting task:', error);
       res.status(500).send('Internal Server Error');
     }
   }
+  
 async function handlePersonalTasks(req,res) {
     const myTasks = await Task.find({creator : req.user._id , assignee : req.user._id});
     return res.render("myTasks" , {
