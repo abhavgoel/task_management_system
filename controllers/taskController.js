@@ -3,6 +3,8 @@ const User = require("../models/User");
 const path = require("path");
 const fs = require("fs");
 
+const { sendTaskNotification } = require("../utils/notify")
+
 
 async function handleCreateTask(req,res) { //TODO
     const { title, assignee, dueDate, priority, description  } = req.body;
@@ -22,6 +24,7 @@ async function handleCreateTask(req,res) { //TODO
         status: "Pending",
     });
 
+    await sendTaskNotification(assignee, task);
     return res.redirect("/user/userHome")
 }
 

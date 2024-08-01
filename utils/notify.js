@@ -1,28 +1,35 @@
 const nodemailer = require('nodemailer');
 
 const transporter = nodemailer.createTransport({
-    service: 'Gmail',
-    auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
-    }
+  service: 'gmail', 
+  auth: {
+    user: process.env.MAIL_ID, 
+    pass: process.env.MAIL_PASS 
+  }
 });
 
-const notify = (to, message) => {
+async function sendTaskNotification(userEmail, task) {
     const mailOptions = {
-        from: process.env.EMAIL_USER,
-        to,
-        subject: 'Task Notification',
-        text: message
+      from: process.env.MAIL_ID, 
+      to: userEmail, 
+      subject: 'New Task Assigned', 
+      text: `A new task has been assigned to you:
+  
+      Title: ${task.title}
+      Description: ${task.description}
+      Due Date: ${new Date(task.dueDate).toLocaleDateString()}
+  
+      Please check your tasks for more details.`
     };
-
-    transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-            console.error('Error sending email:', error);
-        } else {
-            console.log('Email sent:', info.response);
-        }
-    });
-};
-
-module.exports = notify;
+  
+    try {
+      await transporter.sendMail(mailOptions);
+      console.log('Notification email sent to:', userEmail);
+    } catch (error) {
+      console.error('Error sending email:', error);
+    }
+  }
+  
+  module.exports = {
+    sendTaskNotification
+  }
