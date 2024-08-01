@@ -37,7 +37,7 @@ The Task Management System is a web application designed to help users manage ta
    ```env
    MONGO_URI=mongodb://localhost:27017/task_management
    MAIL_ID=your-email@example.com
-   MAIL_PASSWORD=your-email-password
+   MAIL_PASS=your-email-password
    JWT_SECRET=your-secret-key
    ```
 
