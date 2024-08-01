@@ -3,7 +3,7 @@ const User = require("../models/User");
 const path = require("path");
 const fs = require("fs");
 
-const { sendTaskNotification } = require("../utils/notify")
+const { sendTaskNotification , sendCompletedTaskNotification} = require("../utils/notify")
 
 
 async function handleCreateTask(req,res) { //TODO
@@ -68,13 +68,20 @@ async function handleGetTaskDetails(req,res) {
 
 async function handleUpdateTaskStatusByAssignee(req,res) { //if provided only status as input
     const taskId = req.params.id;
-    const task = await Task.findById(taskId);
+    const task = await Task.findById(taskId).populate("assignee");
+    const previousStatus = task.status;
     task.status = req.body.status;
     await task.save();
-    return res.render("task", {
-        task : task,
-        user : req.user
-    })
+    // return res.render("task", {
+    //     task : task,
+    //     user : req.user
+    // })
+    if (task.status === 'Completed' && previousStatus !== 'Completed') {
+        // Send email notification
+        const assigneeEmail = task.assignee.email;
+        await sendCompletedTaskNotification(assigneeEmail, task);
+    }
+    return res.redirect("back");
 }
 
 async function handleGetEditTaskByCreator(req,res) {
