@@ -24,17 +24,22 @@ router.get("/userHome", requireAuth, async (req, res) => {
     const nextWeek = new Date();
     nextWeek.setDate(today.getDate() + 7);
 
-   
-    const tasksNearDueDate = await Task.find({
-        assignee : userId,
-        dueDate: { $gte: today, $lte: nextWeek }
-    }).populate("assignee", "name")
-      .populate("creator", "name");
+    try {
+        const tasksNearDueDate = await Task.find({
+            assignee: userId,
+            dueDate: { $gte: today, $lte: nextWeek },
+            status: { $ne: 'Completed' } // Exclude tasks with status "completed"
+        }).populate("assignee", "name")
+            .populate("creator", "name");
 
-    return res.render("userHome", {
-        user: req.user,
-        tasks: tasksNearDueDate
-    });
+        return res.render("userHome", {
+            user: req.user,
+            tasks: tasksNearDueDate
+        });
+    } catch (error) {
+        console.error('Error fetching tasks:', error);
+        res.status(500).send('Internal Server Error');
+    }
 });
 
 router.get("/logout", (req, res) => {

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <%- include("./partials/css.ejs") %>
+  <title>Past Tasks</title>
+</head>
+
+<body>
+  <%- include("./partials/navbar.ejs") %>
+  <div class="container mt-5">
+    <h2>Completed Tasks</h2>
+    <% if (locals.tasks && locals.tasks.length > 0) { %>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Creator</th>
+          <th>Assignee</th>
+          <th>Due Date</th>
+          <th>Priority</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% tasks.forEach(task => { %>
+        <tr>
+          <td><%= task.title %></td>
+          <td><%= task.creator.name %></td>
+          <td><%= task.assignee.name %></td>
+          <td><%= task.dueDate.toDateString() %></td>
+          <td><%= task.priority %></td>
+          <td><%= task.status %></td>
+        </tr>
+        <% }) %>
+      </tbody>
+    </table>
+    <% } else { %>
+    <p>No completed tasks found.</p>
+    <% } %>
+  </div>
+  <%- include("./partials/script.ejs") %>
+</body>
+
+</html>

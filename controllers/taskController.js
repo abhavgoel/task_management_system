@@ -3,21 +3,21 @@ const User = require("../models/User");
 const path = require("path");
 const fs = require("fs");
 
-const { sendTaskNotification , sendCompletedTaskNotification, sendTaskDeletionNotification} = require("../utils/notify")
+const { sendTaskNotification, sendCompletedTaskNotification, sendTaskDeletionNotification } = require("../utils/notify")
 
 
-async function handleCreateTask(req,res) { //TODO
-    const { title, assignee, dueDate, priority, description  } = req.body;
+async function handleCreateTask(req, res) { //TODO
+    const { title, assignee, dueDate, priority, description } = req.body;
 
     const creator = req.user._id;
 
-    const assigneeUser = await User.findOne({email:assignee});
+    const assigneeUser = await User.findOne({ email: assignee });
 
-    
+
     const task = await Task.create({
         title,
         creator,
-        assignee : assigneeUser._id,
+        assignee: assigneeUser._id,
         dueDate,
         priority,
         description,
@@ -38,39 +38,42 @@ async function handleDeleteTask(req, res) {
             res.redirect(previousUrl);
         }
     } catch (error) {
-      console.error('Error deleting task:', error);
-      res.status(500).send('Internal Server Error');
+        console.error('Error deleting task:', error);
+        res.status(500).send('Internal Server Error');
     }
-  }
-  
-async function handlePersonalTasks(req,res) {
-    const myTasks = await Task.find({creator : req.user._id , assignee : req.user._id});
-    return res.render("myTasks" , {
-        user:req.user,
+}
+
+async function handlePersonalTasks(req, res) {
+    const myTasks = await Task.find({ creator: req.user._id, assignee: req.user._id });
+    return res.render("myTasks", {
+        user: req.user,
         tasks: myTasks,
     });
 }
 
-async function handleAssignedTasks(req,res) {
-    const assignedTasks = await Task.find({assignee : req.user._id}).populate("creator");   
-    return res.render("assignedTasks" , {
-        user:req.user,
+async function handleAssignedTasks(req, res) {
+    const assignedTasks = await Task.find({
+        assignee: req.user._id ,
+        status : {$ne : "Completed"}
+    }).populate("creator");
+    return res.render("assignedTasks", {
+        user: req.user,
         tasks: assignedTasks,
     });
-    
+
 }
 
 //TODO - add Tasks update delete endpoints
-async function handleGetTaskDetails(req,res) {
+async function handleGetTaskDetails(req, res) {
     const taskId = req.params.id;
     const task = await Task.findById(taskId).populate("creator").populate("assignee");
-    return res.render("task" , {
-        task :task,
-        user : req.user
+    return res.render("task", {
+        task: task,
+        user: req.user
     });
 }
 
-async function handleUpdateTaskStatusByAssignee(req,res) { //if provided only status as input
+async function handleUpdateTaskStatusByAssignee(req, res) { //if provided only status as input
     const taskId = req.params.id;
     const task = await Task.findById(taskId).populate("assignee");
     const previousStatus = task.status;
@@ -88,16 +91,16 @@ async function handleUpdateTaskStatusByAssignee(req,res) { //if provided only st
     return res.redirect("back");
 }
 
-async function handleGetEditTaskByCreator(req,res) {
+async function handleGetEditTaskByCreator(req, res) {
     const taskId = req.params.id;
     const task = await Task.findById(taskId).populate("assignee");
     // console.log(task)
-    return res.render("editTask" , {
-        task : task,
-        user : req.user
+    return res.render("editTask", {
+        task: task,
+        user: req.user
     });
 }
-async function handleUpdateTaskByCreator(req,res) {
+async function handleUpdateTaskByCreator(req, res) {
     const taskId = req.params.id;
     const task = await Task.findById(taskId);
 
@@ -111,15 +114,20 @@ async function handleUpdateTaskByCreator(req,res) {
     await task.save();
 
     return res.render("editTask", {
-        task:task,
-        user:req.user,
-        msg:"Task updated"
+        task: task,
+        user: req.user,
+        msg: "Task updated"
     })
 }
 
-async function handleGetTasksAssignedByUser(req,res) {
+async function handleGetTasksAssignedByUser(req, res) {
     const userId = req.user._id;
-    const tasks = await Task.find({ creator: userId }).populate("assignee");
+    const tasks = await Task.find({
+        creator: userId,
+        assignee: { $ne: userId }, // Exclude tasks where creator and assignee are the same
+        
+    }).populate("assignee");
+
     return res.render("myAssignedTasks", {
         tasks: tasks,
         user: req.user
@@ -127,7 +135,7 @@ async function handleGetTasksAssignedByUser(req,res) {
 
 }
 
-async function handleAddAttachment (req,res) {
+async function handleAddAttachment(req, res) {
     const taskId = req.params.id;
     const task = await Task.findById(taskId);
 
@@ -142,10 +150,10 @@ async function handleAddAttachment (req,res) {
     await task.save();
 
     return res.redirect('back');
-    
+
 }
 
-async function handleDeleteAttachment(req,res) {
+async function handleDeleteAttachment(req, res) {
     const taskId = req.params.taskId;
     const task = await Task.findById(taskId);
 
@@ -159,19 +167,35 @@ async function handleDeleteAttachment(req,res) {
     await task.save();
 
     return res.redirect("back");
-    
+
 }
 
-async function handleDownloadfile(req,res) {
+async function handleDownloadfile(req, res) {
     const uploadPath = path.resolve("./uploads")
     const filename = req.params.filename;
     const filePath = path.join(uploadPath, filename);
 
     res.download(filePath, filename, (err) => {
         if (err) {
-          res.status(500).send('Error downloading file');
+            res.status(500).send('Error downloading file');
         }
     });
+}
+
+async function handleGetPastTasks(req,res) {
+    //get completed tasks by user
+    const userId = req.user._id;
+    const completedTasks = await Task.find({
+        assignee: userId,
+        status: 'Completed'
+    }).populate("assignee", "name")
+      .populate("creator", "name");
+
+    return res.render("pastTasks", {
+        user: req.user,
+        tasks: completedTasks
+    });
+
 }
 
 
@@ -189,7 +213,8 @@ module.exports = {
     handleDeleteTask,
     handleAddAttachment,
     handleDeleteAttachment,
-    handleDownloadfile
+    handleDownloadfile,
+    handleGetPastTasks
 
 }
 

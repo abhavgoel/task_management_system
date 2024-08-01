@@ -11,7 +11,8 @@ const { handleCreateTask,
     handleDeleteTask,
     handleAddAttachment,
     handleDeleteAttachment,
-    handleDownloadfile } = require("../controllers/taskController")
+    handleDownloadfile,
+    handleGetPastTasks } = require("../controllers/taskController")
 
 
 
@@ -70,6 +71,10 @@ router.post("/addAttachment/:id",upload.single('attachment'),handleAddAttachment
 //delete attachment
 router.post("/deleteAttachment/:taskId/:filename", handleDeleteAttachment);
 
+//Download file
 router.get("/attachments/:filename", handleDownloadfile)
+
+//Past tasks
+router.get("/pastTasks" ,handleGetPastTasks)
 
 module.exports = router;
