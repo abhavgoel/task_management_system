@@ -58,7 +58,16 @@ async function handleUserLogin(req, res) {
     }
 }
 
+async function handleSendOtp(req,res) {
+    
+}
+
+async function handleResetPassword(req,res) {
+
+}
+
 module.exports = {
     handleUserSignup,
-    handleUserLogin
+    handleUserLogin,
+    handleResetPassword
 };

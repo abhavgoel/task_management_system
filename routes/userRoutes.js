@@ -46,4 +46,10 @@ router.get("/logout", (req, res) => {
     res.clearCookie("token").redirect("/");
 })
 
+router.get("/resetPassword", (req,res) => {
+    return res.render("resetPassword");
+});
+
+router.post("")
+
 module.exports = router;

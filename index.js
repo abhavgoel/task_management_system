@@ -46,4 +46,4 @@ app.use("/tasks" , requireAuth, taskRoute);
 
 app.listen(PORT, () => {
     console.log("Server listening on PORT: " + PORT);
-})
+});

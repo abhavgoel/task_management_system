@@ -21,6 +21,12 @@ const userSchema = new mongoose.Schema({
     group : {
         type: mongoose.Schema.Types.ObjectId,
         ref : 'Group'
+    },
+    resetOtp : {
+        type:String,
+    },
+    otpExpiry : {
+        type:Date
     }
 
 });
