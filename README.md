@@ -62,4 +62,38 @@ The Task Management System is a web application designed to help users manage ta
 ### Notifications
 - Email notifications are sent when a task is created or completed
 
+## Interface
+
+### Landing Page
+  ![image](https://github.com/user-attachments/assets/4b0eed28-e31a-4293-bebc-1032fccc06ef)
+
+### Login
+   ![image](https://github.com/user-attachments/assets/f9762320-466e-41c3-a746-ffe48678e13e)
+
+### Signup
+   ![image](https://github.com/user-attachments/assets/022d25cb-556b-4c97-9b0d-8c28bee0b04a)
+
+### User landing page after Login
+   ![image](https://github.com/user-attachments/assets/d4bbebde-64e0-4563-a25c-e892eaf5fdfa)
+
+### Personal tasks for users
+   ![image](https://github.com/user-attachments/assets/24758c9e-cf02-4f53-baa6-8419b68975d8)
+
+### Tasks assigned to users
+   ![image](https://github.com/user-attachments/assets/52e0cf07-5d01-4ded-ae61-20f58f437d86)
+
+### Task History
+   ![image](https://github.com/user-attachments/assets/08dbee91-5dbf-4da9-9083-7f10c377b57f)
+
+### Create Task
+   ![image](https://github.com/user-attachments/assets/839bbcb0-6fc3-4f82-8857-aac04efa0f52)
+
+
+
+
+
+
+
+
+
 
