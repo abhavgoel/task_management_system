@@ -1,5 +1,7 @@
 const Task = require("../models/Task");
 const User = require("../models/User");
+const path = require("path");
+const fs = require("fs");
 
 
 async function handleCreateTask(req,res) { //TODO
@@ -129,6 +131,35 @@ async function handleAddAttachment (req,res) {
     
 }
 
+async function handleDeleteAttachment(req,res) {
+    const taskId = req.params.taskId;
+    const task = await Task.findById(taskId);
+
+    task.attachments = task.attachments.filter(attachment => attachment.filename !== req.params.filename);//update the task array removing the filename to be deleted
+    let uploadPath = path.resolve("./uploads");
+    uploadPath = path.join(uploadPath, req.params.filename);
+    console.log(uploadPath)
+    if (fs.existsSync(uploadPath)) {
+        fs.unlinkSync(uploadPath);
+    }
+    await task.save();
+
+    return res.redirect("back");
+    
+}
+
+async function handleDownloadfile(req,res) {
+    const uploadPath = path.resolve("./uploads")
+    const filename = req.params.filename;
+    const filePath = path.join(uploadPath, filename);
+
+    res.download(filePath, filename, (err) => {
+        if (err) {
+          res.status(500).send('Error downloading file');
+        }
+    });
+}
+
 
 
 
@@ -142,7 +173,9 @@ module.exports = {
     handleGetEditTaskByCreator,
     handleGetTasksAssignedByUser,
     handleDeleteTask,
-    handleAddAttachment
+    handleAddAttachment,
+    handleDeleteAttachment,
+    handleDownloadfile
 
 }
 

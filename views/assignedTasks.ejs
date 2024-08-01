@@ -50,7 +50,7 @@
           <li class="list-group-item">
             <a href="/tasks/attachments/<%= attachment.filename %>" download><%= attachment.originalname %></a>
             <form action="/tasks/deleteAttachment/<%= task._id %>/<%= attachment.filename %>" method="POST" style="display: inline;">
-              <button type="submit" class="btn btn-danger btn-sm float-end">Delete</button>
+              <button type="submit" class="btn btn-danger btn-sm float-end" onclick="return confirm('Are you sure you want to delete this file?');">Delete</button>
             </form>
           </li>
           <% }) %>

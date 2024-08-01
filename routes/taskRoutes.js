@@ -9,7 +9,11 @@ const { handleCreateTask,
     handleGetEditTaskByCreator,
     handleGetTasksAssignedByUser,
     handleDeleteTask,
-    handleAddAttachment } = require("../controllers/taskController")
+    handleAddAttachment,
+    handleDeleteAttachment,
+    handleDownloadfile } = require("../controllers/taskController")
+
+
 
 //Multer setup -------------------------------------------------
 const multer = require('multer');
@@ -62,5 +66,10 @@ router.post("/delete/:id", handleDeleteTask)
 
 //add attachment
 router.post("/addAttachment/:id",upload.single('attachment'),handleAddAttachment);
+
+//delete attachment
+router.post("/deleteAttachment/:taskId/:filename", handleDeleteAttachment);
+
+router.get("/attachments/:filename", handleDownloadfile)
 
 module.exports = router;
