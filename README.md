@@ -12,6 +12,7 @@ The Task Management System is a web application designed to help users manage ta
 
 ## Features
 - User authentication and authorization
+- Password reset via OTP
 - Task creation, assignment, and management
 - Task status updates
 - Attachment management
