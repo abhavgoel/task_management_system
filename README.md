@@ -1,4 +1,4 @@
-# Task Management System
+# TaskUp - Where Efficiency Meets Excellence.
 
 ## Table of Contents
 1. [Introduction](#introduction)
@@ -8,7 +8,7 @@
 
 
 ## Introduction
-The Task Management System is a web application designed to help users manage tasks efficiently. Users can create tasks, assign them to others, update statuses, and receive notifications. This system is built using Node.js, Express, EJS, and MongoDB. The whole system is dynamically interconnected. The User landing page also provides the Tasks that are due in the next week, so that you can prioritize the tasks near deadlines.
+The TaskUp is a web application designed to help users manage tasks efficiently. Users can create tasks, assign them to others, update statuses, and receive notifications. This system is built using Node.js, Express, EJS, and MongoDB. The whole system is dynamically interconnected. The User landing page also provides the Tasks that are due in the next week, so that you can prioritize the tasks near deadlines.
 
 ## Features
 - User authentication and authorization
