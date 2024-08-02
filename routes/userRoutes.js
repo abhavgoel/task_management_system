@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { handleUserLogin, handleUserSignup } = require("../controllers/authController");
+const { handleUserLogin, handleUserSignup, handleSendOtp, handleVerifyOtpAndResetPassword } = require("../controllers/authController");
 const { requireAuth } = require("../middlewares/authorization")
 const Task = require("../models/Task")
 
@@ -50,6 +50,9 @@ router.get("/resetPassword", (req,res) => {
     return res.render("resetPassword");
 });
 
-router.post("")
+router.post("/sendOtp", handleSendOtp);
+
+router.post("/resetPassword", handleVerifyOtpAndResetPassword);
+
 
 module.exports = router;

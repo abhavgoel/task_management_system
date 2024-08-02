@@ -74,8 +74,25 @@ async function sendTaskDeletionNotification(assigneeEmail, task) {
     }
 }
 
+async function sendOtpNotification(userMail, user) {
+    const mailOptions = {
+        from: process.env.MAIL_ID,
+        to: userMail,
+        subject: 'OTP Verification',
+        text: `Your OTP for password reset is: ${user.resetOtp}. Do not share your OTP with anyone else. Validity 5 Mins`
+    };
+    try {
+        await transporter.sendMail(mailOptions);
+        console.log('OTP email sent to:', userMail);
+    } catch (error) {
+        console.error('Error sending OTP email:', error);
+    }
+
+}
+
 module.exports = {
     sendTaskNotification,
     sendCompletedTaskNotification,
-    sendTaskDeletionNotification
+    sendTaskDeletionNotification,
+    sendOtpNotification
 }
