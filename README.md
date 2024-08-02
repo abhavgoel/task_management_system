@@ -69,10 +69,13 @@ The Task Management System is a web application designed to help users manage ta
   ![image](https://github.com/user-attachments/assets/4b0eed28-e31a-4293-bebc-1032fccc06ef)
 
 ### Login
-   ![image](https://github.com/user-attachments/assets/f9762320-466e-41c3-a746-ffe48678e13e)
+   ![image](https://github.com/user-attachments/assets/7951e380-baca-447e-8b81-0c10e877201a)
 
 ### Signup
    ![image](https://github.com/user-attachments/assets/022d25cb-556b-4c97-9b0d-8c28bee0b04a)
+
+### Password reset
+   ![image](https://github.com/user-attachments/assets/c23dfb75-d910-4fd6-be94-3a1660ed5ae3)
 
 ### User landing page after Login
    ![image](https://github.com/user-attachments/assets/d4bbebde-64e0-4563-a25c-e892eaf5fdfa)
